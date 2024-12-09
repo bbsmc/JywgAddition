@@ -1,7 +1,7 @@
 package moe.kotori.jywgaddition.mixin;
 
 import com.mojang.datafixers.util.Either;
-import moe.kotori.jywgaddition.event.waystone.WayStone;
+import moe.kotori.jywgaddition.event.waystone.PlayerWayStoneTeleportEvent;
 import net.blay09.mods.waystones.api.IWaystoneTeleportContext;
 import net.blay09.mods.waystones.api.WaystoneTeleportError;
 import net.blay09.mods.waystones.core.PlayerWaystoneManager;
@@ -21,7 +21,7 @@ public class PlayerWayStoneManagerMixin {
     private static void fireWayStoneTpEvent(IWaystoneTeleportContext context, CallbackInfoReturnable<Either<List<Entity>, WaystoneTeleportError>> cir) {
         var target = context.getEntity();
         if (target instanceof Player player) {
-            MinecraftForge.EVENT_BUS.post(new WayStone(player, context.getFromWaystone(), context.getTargetWaystone()));
+            MinecraftForge.EVENT_BUS.post(new PlayerWayStoneTeleportEvent(player, context.getFromWaystone(), context.getTargetWaystone()));
         }
     }
 }
