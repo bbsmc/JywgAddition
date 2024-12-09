@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "moe.kotori.jywgaddition.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "jywgaddition.refmap.json",
+  "mixins": [
+    "PlayerWayStoneManagerMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
