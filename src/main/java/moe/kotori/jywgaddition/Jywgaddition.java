@@ -1,6 +1,7 @@
 package moe.kotori.jywgaddition;
 
 import com.mojang.logging.LogUtils;
+import moe.kotori.jywgaddition.listener.EntityTeleportEventListener;
 import moe.kotori.jywgaddition.listener.RecruitEventListener;
 import moe.kotori.jywgaddition.listener.WayStoneTeleportListener;
 import net.minecraftforge.common.MinecraftForge;
@@ -18,5 +19,6 @@ public class Jywgaddition {
         MinecraftForge.EVENT_BUS.addListener(WayStoneTeleportListener::onWayStoneTeleport);
         MinecraftForge.EVENT_BUS.addListener(RecruitEventListener::onRecruitFollow);
         MinecraftForge.EVENT_BUS.addListener(RecruitEventListener::onRecruitUnFollow);
+        MinecraftForge.EVENT_BUS.addListener(EntityTeleportEventListener::onEntityTeleport);
     }
 }
