@@ -19,10 +19,21 @@ public class EntityTeleportEventListener {
             var tag = player.getPersistentData().getCompound("FollowRecruits");
             if (tag != null) {
                 tag.getAllKeys().forEach(k -> {
-                    if (player.level() instanceof ServerLevel level) {
-                        level.getEntity(UUID.fromString(k)).teleportTo(event.getTargetX(), event.getTargetY(), event.getTargetZ());
+                    if (k != null) {
+                        UUID recruitUUID = UUID.fromString(k);
+                        if (recruitUUID != null) {
+                            if (player.level() instanceof ServerLevel level) {
+                                var recruit = level.getEntity(recruitUUID);
+                                if (recruit == null) {
+                                    return;
+                                }
+                                recruit.teleportTo(event.getTargetX(), event.getTargetY(), event.getTargetZ());
+                            }
+                            entity.sendSystemMessage(Component.literal("将跟随士兵: %s 传送至身边".formatted(k)));
+                        } else {
+                            tag.remove(k);
+                        }
                     }
-                    entity.sendSystemMessage(Component.literal("将跟随士兵: %s 传送至身边".formatted(k)));
                 });
             }
         }
@@ -38,8 +49,10 @@ public class EntityTeleportEventListener {
             var tag = toPlayer.getPersistentData().getCompound("FollowRecruits");
             if (tag != null) {
                 tag.getAllKeys().forEach(k -> {
-                    fromLevel.getEntity(UUID.fromString(k)).teleportTo(toLevel, toPlayer.getX(), toPlayer.getY(), toPlayer.getZ(), Set.of(), 0.0F, 0.0F);
-                    event.getEntity().sendSystemMessage(Component.literal("将跟随士兵: %s 传送至身边".formatted(k)));
+                    if (k != null) {
+                        fromLevel.getEntity(UUID.fromString(k)).teleportTo(toLevel, toPlayer.getX(), toPlayer.getY(), toPlayer.getZ(), Set.of(), 0.0F, 0.0F);
+                        event.getEntity().sendSystemMessage(Component.literal("将跟随士兵: %s 传送至身边".formatted(k)));
+                    }
                 });
             }
         }

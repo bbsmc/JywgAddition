@@ -21,9 +21,15 @@ public class WayStoneTeleportListener {
         var tag = player.getPersistentData().getCompound("FollowRecruits");
         if (tag != null) {
             tag.getAllKeys().forEach(k -> {
-                ServerLifecycleHooks.getCurrentServer().getLevel(event.getFromWayStone().getDimension())
-                        .getEntity(UUID.fromString(k))
-                        .teleportTo(
+                if (k != null) {
+                    UUID recruitUUID = UUID.fromString(k);
+                    if (recruitUUID != null) {
+                        var fromLevel = ServerLifecycleHooks.getCurrentServer().getLevel(event.getFromWayStone().getDimension());
+                        var recruit = fromLevel.getEntity(recruitUUID);
+                        if (recruit == null) {
+                            return;
+                        }
+                        recruit.teleportTo(
                                 ServerLifecycleHooks.getCurrentServer().getLevel(event.getTargetWayStone().getDimension()),
                                 event.getTargetWayStone().getPos().getX(),
                                 event.getTargetWayStone().getPos().getY(),
@@ -31,8 +37,12 @@ public class WayStoneTeleportListener {
                                 Set.of(),
                                 0.0F,
                                 0.0F
-                                );
-                player.sendSystemMessage(Component.literal("将跟随士兵: %s 传送至身边".formatted(k)));
+                        );
+                        player.sendSystemMessage(Component.literal("将跟随士兵: %s 传送至身边".formatted(k)));
+                    } else {
+                        tag.remove(k);
+                    }
+                }
             });
         }
     }
